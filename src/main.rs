@@ -6,7 +6,6 @@ extern crate toml;
 extern crate serde_derive;
 
 mod config;
-mod passthrough;
 mod proxy;
 mod stats;
 
@@ -19,17 +18,11 @@ Convey 0.3.1
 Usage:
   convey
   convey --config=<config_file>
-  convey (-p | --passthrough) --config=<config_file>
-  convey (-d | --dsr) --config=<config_file>
-  convey (-p | --passthrough)
-  convey (-d | --dsr)
   convey (-h | --help)
   convey (-v | --version)
 
 Options:
   -h, --help               Show this screen.s
-  -p, --passthrough        Run load balancer in passthrough mode (instead of default proxy mode)
-  -d, --dsr                Run load balancer in direct server mode (instead of default proxy mode)
   --config=<config_file>   Config file location [default config.toml].
   -v, --version            Show version.
 ";
@@ -53,20 +46,10 @@ fn main() {
         Ok(config) => {
             info!("Config is: {:?}", config);
             let stats_sender = stats::run(&config.base);
-            if args.get_bool("--passthrough") {
-                debug!("Starting loadbalancer in passthrough mode");
-                let mut loadbalancer = passthrough::Server::new(config, false);
-                loadbalancer.run(stats_sender);
-            } else if args.get_bool("--dsr") {
-                debug!("Starting loadbalancer in direct server return mode");
-                let mut loadbalancer = passthrough::Server::new(config, true);
-                loadbalancer.run(stats_sender);
-            } else {
-                debug!("Starting loadbalancer in proxy mode");
-                let mut loadbalancer = proxy::Server::new(config);
-                if let Err(_) = loadbalancer.run(stats_sender) {
-                    error!("Unable to start server");
-                }
+            debug!("Starting loadbalancer in proxy mode");
+            let mut loadbalancer = proxy::Server::new(config);
+            if let Err(_) = loadbalancer.run(stats_sender) {
+                error!("Unable to start server");
             }
         }
         Err(e) => error!("Error loading configuration file: {:?}", e),

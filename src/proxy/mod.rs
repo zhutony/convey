@@ -8,7 +8,6 @@ use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use tokio::io;
 use tokio::net::{TcpListener, TcpStream};
-use tokio::prelude::*;
 
 mod backend;
 

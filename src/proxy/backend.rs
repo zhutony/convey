@@ -79,7 +79,7 @@ impl ServerPool {
             backend_servers
         );
 
-        let mut servers_dist = None;
+        let servers_dist;
         match WeightedIndex::new(weights.clone()) {
             Ok(dist) => servers_dist = Some(dist),
             Err(e) => {
