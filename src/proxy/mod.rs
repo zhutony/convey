@@ -153,7 +153,18 @@ async fn run_server(
 
     let mut listener = TcpListener::bind(&lb.listen_addr).await?;
 
-    while let Ok((inbound, _)) = listener.accept().await {
+    loop {
+        let result = listener.accept().await;
+        let (inbound, src_addr) = match result {
+            Ok((inbound, src_addr)) => (inbound, src_addr),
+            Err(e) => {
+                           debug!("ERR: {:?}", e);
+                           break;
+                      },
+        };
+
+        debug!("accept: {:?}", src_addr);
+
         // clones for async thread
         let sdr = sender.clone();
         let thread_lb = lb.clone();
@@ -181,6 +192,7 @@ async fn run_server(
             }
         });
     }
+    debug!("*** exiting from listing on the front port.");
     Ok(())
 }
 

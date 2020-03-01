@@ -27,6 +27,7 @@ async def tcp_echo_client(message, loop):
                 data = await reader.read(100)
             except Exception as ex:
                 print("*** Error: ", ex)
+                writer.close()
                 continue
     
             print('Received: %r' % data.decode())
