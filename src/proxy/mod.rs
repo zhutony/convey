@@ -134,7 +134,7 @@ impl Server {
             let p = proxy.clone();
             tokio::spawn(async move {
                 if let Err(e) = run_server(p.clone(), srv_sender).await {
-                    error!("Error running proxy server {}: {:?}", e, p);
+                    error!("*** Error running proxy server {}: {:?}", e, p);
                     return;
                 }
             });
@@ -154,16 +154,16 @@ async fn run_server(
     let mut listener = TcpListener::bind(&lb.listen_addr).await?;
 
     loop {
-        let result = listener.accept().await;
-        let (inbound, src_addr) = match result {
-            Ok((inbound, src_addr)) => (inbound, src_addr),
-            Err(e) => {
-                           debug!("ERR: {:?}", e);
-                           break;
-                      },
-        };
-
-        debug!("accept: {:?}", src_addr);
+        let inbound = match listener.accept().await {
+                          Ok((inbound, src_addr)) => {
+                                                        debug!("accept: {:?}", src_addr);
+                                                        inbound
+                                                      }
+                          Err(e) => {
+                                       error!("Error on listener.accept: {}", e);
+                                       continue;
+                                    }
+                      };
 
         // clones for async thread
         let sdr = sender.clone();

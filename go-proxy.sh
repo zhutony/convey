@@ -1,4 +1,5 @@
-RUST_BACKTRACE=1;RUST_LOG=debug ./target/debug/convey --config sample-proxy.toml 
+# RUST_BACKTRACE=1;RUST_LOG=debug ./target/debug/convey --config sample-proxy.toml 
+./target/debug/convey --config sample-proxy.toml 
 
 # DEBUG 2020-03-01T05:30:32Z: convey::proxy: *** exiting from listing on the front port.
 # DEBUG 2020-03-01T05:30:32Z: convey::proxy::backend: Running backend health checkerBackend { name: "tcp3000_out", servers: RwLock { s: Semaphore { state: SemState { permits: 32 }, head: 0x7f83b7b00598, rx_lock: 0, stub: Waiter 
