@@ -6,11 +6,11 @@ backend = "tcp3000_out"
   health_check_interval = 3
   [backends.tcp3000_out.servers]
     [backends.tcp3000_out.servers.server1]
-    addr = "192.168.55.1:80"
-    weight = 10
+    addr = "192.168.55.1:3001"
+    weight = 2
     [backends.tcp3000_out.servers.server2]
-    addr = "192.168.55.1:80"
-    weight = 100
+    addr = "192.168.55.1:3002"
+    weight = 8
 
 [stats]
 port = "7000"
