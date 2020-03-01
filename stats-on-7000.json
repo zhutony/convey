@@ -1,0 +1,29 @@
+// 20200229203705
+// http://localhost:7000/stats
+
+{
+  "total_connections": 74,
+  "current_connections": 74,
+  "total_bytes_tx": 0,
+  "total_bytes_rx": 0,
+  "backends": {
+    "tcp3000_out": {
+      "total_connections": 74,
+      "current_connections": 74,
+      "bytes_tx": 0,
+      "bytes_rx": 0,
+      "servers": {
+        "192.168.55.1:3002": true,
+        "192.168.55.1:3001": true
+      }
+    }
+  },
+  "frontends": {
+    "tcp_3000": {
+      "total_connections": 74,
+      "current_connections": 74,
+      "bytes_tx": 0,
+      "bytes_rx": 0
+    }
+  }
+}
